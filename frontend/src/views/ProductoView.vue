@@ -1,0 +1,170 @@
+<template>
+    <div>
+
+    <header class="header">
+      <RouterLink to="/">
+        <img src="/logo.png" alt="Logo" class="logo" />
+      </RouterLink>
+      <nav class="nav">
+        <RouterLink to="/">Inicio</RouterLink>
+        <RouterLink to="/noticias">Noticias</RouterLink>
+        <RouterLink to="/tienda">Tienda</RouterLink>
+        <RouterLink to="/carrito">Carrito</RouterLink>
+        <RouterLink to="/login">Inicio Sesión</RouterLink>
+      </nav>
+    </header>
+  <div v-if="producto" class="detalle-producto">
+    <div class="producto-main">
+      <div class="galeria">
+        <img :src="producto.imagen" alt="Imagen producto" class="imagen-principal" />
+      </div>
+
+      <div class="info">
+        <h1>{{ producto.nombre }}</h1>
+        <p class="descripcion">{{ producto.descripcion }}</p>
+        <p class="precio"><strong>Precio:</strong> {{ producto.precio }} €</p>
+
+        <div class="acciones">
+          <input type="number" v-model="cantidad" min="1" />
+        <button 
+        @click="añadirAlCarrito" 
+        :disabled="cantidad <= 0"
+        >
+        AÑADIR A LA BOLSA
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+
+const route = useRoute()
+const producto = ref(null)
+const cantidad = ref(1)
+
+onMounted(async () => {
+  const res = await axios.get('http://localhost:5000/tienda')
+  producto.value = res.data.find(p => p.id == route.params.id)
+})
+
+function añadirAlCarrito() {
+  alert(`Añadido ${cantidad.value} de "${producto.value.nombre}" al carrito.`)
+}
+</script>
+
+<style scoped>
+.detalle-producto {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+}
+
+.producto-main {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.galeria {
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.imagen-principal {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info {
+  text-align: left;
+  max-width: 500px;
+}
+
+.info h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.descripcion {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.precio {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.acciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.acciones input {
+  width: 60px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.acciones button {
+  background-color: #eac6c6;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.acciones button:hover {
+  background-color: #d5a8a8;
+}
+.header {
+  background-color: #eac6c6;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 60px;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  font-weight: bold;
+}
+
+.nav a {
+  color: #000;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+</style>
