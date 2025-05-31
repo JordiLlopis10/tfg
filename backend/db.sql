@@ -15,3 +15,13 @@ CREATE TABLE IF NOT EXISTS productos (
     stock INT NOT NULL,
     imagen VARCHAR(255) NULL
 );
+CREATE TABLE pagos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    productos VARCHAR(255) NOT NULL,
+    ciudad VARCHAR(100),
+    cp VARCHAR(10),
+    provincia VARCHAR(100),
+    total DECIMAL(10,2) NOT NULL
+);

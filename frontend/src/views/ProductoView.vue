@@ -1,43 +1,40 @@
 <template>
-    <div>
-
+  <div>
     <header class="header">
       <RouterLink to="/">
         <img src="/logo.png" alt="Logo" class="logo" />
       </RouterLink>
       <nav class="nav">
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/noticias">Noticias</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/login">Inicio Sesión</RouterLink>
+        <RouterLink to="/contacto">Contacto</RouterLink>
       </nav>
     </header>
-  <div v-if="producto" class="detalle-producto">
-    <div class="producto-main">
-      <div class="galeria">
-        <img :src="producto.imagen" alt="Imagen producto" class="imagen-principal" />
-      </div>
 
-      <div class="info">
-        <h1>{{ producto.nombre }}</h1>
-        <p class="descripcion">{{ producto.descripcion }}</p>
-        <p class="precio"><strong>Precio:</strong> {{ producto.precio }} €</p>
+    <div v-if="producto" class="detalle-producto">
+      <div class="producto-main">
+        <div class="galeria">
+          <img :src="producto.imagen" alt="Imagen producto" class="imagen-principal" />
+        </div>
 
-        <div class="acciones">
-          <input type="number" v-model="cantidad" min="1" />
-        <button 
-        @click="añadirAlCarrito" 
-        :disabled="cantidad <= 0"
-        >
-        AÑADIR A LA BOLSA
-        </button>
+        <div class="info">
+          <h1>{{ producto.nombre }}</h1>
+          <p class="descripcion">{{ producto.descripcion }}</p>
+          <p class="precio"><strong>Precio:</strong> {{ producto.precio }} €</p>
+
+          <div class="acciones">
+            <input type="number" v-model="cantidad" min="1" />
+            <button @click="añadirAlCarrito" :disabled="cantidad <= 0">
+              AÑADIR AL CARRITO
+            </button>
+          </div>
+
+          <p v-if="mensajeVisible" class="mensaje-carrito">Añadido al carrito correctamente</p>
         </div>
       </div>
     </div>
   </div>
-</div>
-
 </template>
 
 <script setup>
@@ -48,14 +45,42 @@ import axios from 'axios'
 const route = useRoute()
 const producto = ref(null)
 const cantidad = ref(1)
+const mensajeVisible = ref(false)
 
 onMounted(async () => {
-  const res = await axios.get('http://localhost:5000/tienda')
-  producto.value = res.data.find(p => p.id == route.params.id)
+
+  try {
+    const res = await axios.get('http://localhost:5000/tienda')
+    producto.value = res.data.find(p => p.id == route.params.id)
+  } catch (err) {
+    console.error('Error al cargar el producto:', err)
+  }
 })
 
 function añadirAlCarrito() {
-  alert(`Añadido ${cantidad.value} de "${producto.value.nombre}" al carrito.`)
+  const item = {
+    id: producto.value.id,
+    nombre: producto.value.nombre,
+    imagen: producto.value.imagen,
+    precio: producto.value.precio,
+    cantidad: cantidad.value
+  }
+
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || []
+  const index = carrito.findIndex(p => p.id === item.id)
+
+  if (index !== -1) {
+    carrito[index].cantidad += item.cantidad
+  } else {
+    carrito.push(item)
+  }
+
+  localStorage.setItem('carrito', JSON.stringify(carrito))
+
+  mensajeVisible.value = true
+  setTimeout(() => {
+    mensajeVisible.value = false
+  }, 3000)
 }
 </script>
 
@@ -65,7 +90,6 @@ function añadirAlCarrito() {
   margin: 4rem auto;
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: center;
 }
@@ -140,6 +164,14 @@ function añadirAlCarrito() {
 .acciones button:hover {
   background-color: #d5a8a8;
 }
+
+.mensaje-carrito {
+  margin-top: 1rem;
+  color: green;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
 .header {
   background-color: #eac6c6;
   padding: 1rem 2rem;

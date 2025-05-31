@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
-import PerfilView from '@/views/PerfilView.vue'
 import HomeView from '@/views/HomeView.vue'
 import AdminView from '@/views/AdminView.vue'
 import EditarView from '@/views/EditarView.vue'
 import TiendaView from '@/views/TiendaView.vue'
 import ProductoView from '@/views/ProductoView.vue'
+import CarritoView from '@/views/CarritoView.vue'
+import PasarelaView from '@/views/PasarelaView.vue'
+import ContactoView from '@/views/ContactoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,11 +23,7 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
     },
-    {
-      path: '/perfil',
-      name: 'perfil',
-      component: PerfilView,
-    },
+
     {
       path: '/',
       name: 'home',
@@ -50,6 +48,21 @@ const router = createRouter({
       path: '/tienda/producto/:id',
       name: 'Producto',
       component: ProductoView,
+    },
+    {
+      path: '/carrito',
+      name: 'carrito',
+      component: CarritoView,
+    },
+    {
+      path: '/pago',
+      name: 'pago',
+      component: PasarelaView,
+    },
+    {
+      path: '/contacto',
+      name: 'contacto',
+      component: ContactoView,
     },
   ],
 })

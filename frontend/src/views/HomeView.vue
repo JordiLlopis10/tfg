@@ -6,18 +6,25 @@
       </RouterLink>
       <nav class="nav">
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/noticias">Noticias</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/login">Inicio Sesión</RouterLink>
+        <RouterLink to="/contacto">Contacto</RouterLink>
       </nav>
     </header>
 
-    <main class="main-content">
-      <section class="noticia">
-        <h2>{{ noticia }}</h2>
-      </section>
+    <section class="portada-container">
+      <img src="/portada.png" alt="Portada" class="portada-img" />
+      <div class="portada-texto">{{ noticia }}</div>
+    </section>
 
+    <section class="bienvenida">
+      <h2>Bienvenido a Detalls de Patch</h2>
+      <p>
+        Creamos a mano productos únicos llenos de amor y dedicación. Descubre el detalle perfecto para ti o para regalar a alguien especial.
+      </p>
+    </section>
+
+    <main class="main-content">
       <section class="destacados">
         <h3>Productos Destacados</h3>
         <div class="productos">
@@ -26,15 +33,15 @@
             :key="producto.id"
             :to="`/tienda/producto/${producto.id}`"
             class="producto"
-            >
-
-            <img
-              :src="producto.imagen"
-              alt="Imagen del producto"
-              class="producto-img"
-            />
-            <h4>{{ producto.nombre }}</h4>
-            <p>Precio: {{ producto.precio }}€</p>
+          >
+            <div class="producto-img-container">
+              <img
+                :src="producto.imagen"
+                alt="Imagen del producto"
+                class="producto-img"
+              />
+              <span class="precio">{{ producto.precio }} €</span>
+            </div>
           </RouterLink>
         </div>
 
@@ -46,9 +53,8 @@
   </div>
 </template>
 
-
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const noticia = ref('')
 const destacados = ref([])
@@ -115,7 +121,7 @@ html, body {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Puedes usar 'center' si quieres centrar todo */
+  justify-content: flex-start;
 }
 
 .noticia {
@@ -134,24 +140,116 @@ html, body {
 .productos {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
   justify-content: center;
 }
 
 .producto {
   width: 200px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 1rem;
   background-color: #fff7f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem;
   text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+}
+
+.producto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.producto-img-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .producto-img {
-  width: 100px;
-  border-radius: 6px;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
 }
 
+.precio {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #444;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.portada-container {
+  position: relative;
+  width: 100%;
+  max-height: 700px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.portada-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+.portada-texto {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 240, 245, 0.75);
+  color: #842c56;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.portada-texto:hover {
+  transform: translate(-50%, -50%) scale(1.05) rotate(-1deg);
+  background-color: rgba(255, 230, 240, 0.9);
+  box-shadow: 0 0 15px rgba(132, 44, 86, 0.4);
+}
+
+.bienvenida {
+  background-color: #fff3f3;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 900px;
+  box-shadow: 0 0 10px rgba(233, 178, 178, 0.3);
+}
+
+.bienvenida h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #842c56;
+}
+
+.bienvenida p {
+  font-size: 1.1rem;
+  color: #555;
+  font-style: italic;
+}
 
 .ver-mas-container {
   margin-top: 2rem;
@@ -172,21 +270,10 @@ html, body {
   background-color: #d5a8a8;
 }
 
-.producto {
-  width: 200px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 1rem;
-  background-color: #fff7f7;
+.nombre {
   text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 0.2s;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
-
-.producto:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 </style>

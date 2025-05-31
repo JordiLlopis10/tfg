@@ -6,7 +6,6 @@
       </RouterLink>
       <nav class="nav">
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/noticias">Noticias</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
         <RouterLink to="/login">Inicio Sesión</RouterLink>
@@ -39,13 +38,19 @@ const error = ref('')
 const success = ref('')
 const router = useRouter()
 
-const login  = async () => {
+
+
+const login = async () => {
+  error.value = ''
+  success.value = ''
+
   try {
     const response = await fetch('http://localhost:5000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         email: email.value,
         password: password.value
@@ -55,7 +60,10 @@ const login  = async () => {
     const data = await response.json()
 
     if (response.ok) {
-      console.log('Login exitoso', data)
+      localStorage.setItem('token', data.token)
+
+      await auth.fetchUser()
+      success.value = 'Login exitoso'
       router.push('/perfil')
     } else {
       error.value = data.error || 'Credenciales incorrectas'
@@ -65,6 +73,7 @@ const login  = async () => {
   }
 }
 </script>
+
 
 <style scoped>
 .auth-container {

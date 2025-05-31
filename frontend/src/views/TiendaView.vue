@@ -6,10 +6,10 @@
       </RouterLink>
       <nav class="nav">
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/noticias">Noticias</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/login">Inicio Sesión</RouterLink>
+        <RouterLink to="/contacto">Contacto</RouterLink>
+
       </nav>
     </header>
 
@@ -38,6 +38,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const productos = ref([])
+const isLogged = ref(false)
 const router = useRouter()
 
 onMounted(async () => {
@@ -47,6 +48,7 @@ onMounted(async () => {
   } catch (error) {
     alert('Error al cargar los productos')
   }
+
 })
 
 function irADetalle(id) {
@@ -101,7 +103,6 @@ function irADetalle(id) {
   margin-top: 2rem;
 }
 
-
 .producto-card {
   width: 180px;
   background-color: #ffffff;
@@ -135,5 +136,4 @@ function irADetalle(id) {
   color: #333;
   font-size: 0.85rem;
 }
-
 </style>

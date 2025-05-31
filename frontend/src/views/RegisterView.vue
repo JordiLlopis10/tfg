@@ -6,7 +6,6 @@
       </RouterLink>
       <nav class="nav">
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/noticias">Noticias</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
         <RouterLink to="/login">Inicio Sesión</RouterLink>
