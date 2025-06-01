@@ -121,7 +121,6 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -148,8 +147,9 @@ function editarProducto(id) {
 
 async function cargarProductos() {
   try {
-    const res = await axios.get("http://localhost:5000/productos");
-    productos.value = res.data;
+    const res = await fetch("http://localhost:5000/productos");
+    if (!res.ok) throw new Error("Error al cargar productos");
+    productos.value = await res.json();
   } catch (err) {
     console.error("Error al cargar productos:", err);
   }
@@ -158,7 +158,14 @@ async function cargarProductos() {
 async function añadirProducto() {
   try {
     const productoEnviar = { ...producto };
-    await axios.post("http://localhost:5000/admin", productoEnviar);
+    const res = await fetch("http://localhost:5000/admin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productoEnviar),
+    });
+    if (!res.ok) throw new Error("Error al añadir producto");
     alert("Producto añadido correctamente");
     Object.assign(producto, {
       nombre: "",
@@ -176,7 +183,10 @@ async function añadirProducto() {
 async function eliminarProducto(id) {
   if (!confirm("¿Estás seguro de eliminar este producto?")) return;
   try {
-    await axios.delete(`http://localhost:5000/admin/${id}`);
+    const res = await fetch(`http://localhost:5000/admin/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Error al eliminar producto");
     alert("Producto eliminado");
     await cargarProductos();
   } catch (err) {
@@ -188,22 +198,24 @@ const pedidos = ref([]);
 
 async function cargarPedidos() {
   try {
-    const res = await axios.get("http://localhost:5000/pedidos");
-    pedidos.value = res.data;
+    const res = await fetch("http://localhost:5000/pedidos");
+    if (!res.ok) throw new Error("Error al cargar pedidos");
+    pedidos.value = await res.json();
   } catch (err) {
     console.error("Error al cargar pedidos:", err);
   }
 }
 
 onMounted(() => {
-    if (localStorage.getItem('admin-auth') !== 'true') {
-        router.push('/login')
-        return
+  if (localStorage.getItem("admin-auth") !== "true") {
+    router.push("/login");
+    return;
   }
-    cargarProductos();
-    cargarPedidos();
+  cargarProductos();
+  cargarPedidos();
 });
 </script>
+
 
 <style scoped>
 .header {

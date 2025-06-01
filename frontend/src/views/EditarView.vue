@@ -38,7 +38,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,8 +46,9 @@ const producto = ref(null)
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`http://localhost:5000/admin/editar/${id}`)
-    producto.value = res.data
+    const res = await fetch(`http://localhost:5000/admin/editar/${id}`)
+    if (!res.ok) throw new Error('Error al cargar producto')
+    producto.value = await res.json()
   } catch (err) {
     alert('Error al cargar producto')
   }
@@ -56,7 +56,14 @@ onMounted(async () => {
 
 async function guardarCambios() {
   try {
-    await axios.put(`http://localhost:5000/admin/${id}`, producto.value)
+    const res = await fetch(`http://localhost:5000/admin/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(producto.value),
+    })
+    if (!res.ok) throw new Error('Error al actualizar producto')
     alert('Producto actualizado')
     router.push('/admin')
   } catch (err) {
@@ -64,6 +71,7 @@ async function guardarCambios() {
   }
 }
 </script>
+
 
 <style scoped>
 .editar-panel {

@@ -40,7 +40,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 
 const route = useRoute()
 const producto = ref(null)
@@ -48,10 +47,11 @@ const cantidad = ref(1)
 const mensajeVisible = ref(false)
 
 onMounted(async () => {
-
   try {
-    const res = await axios.get('http://localhost:5000/tienda')
-    producto.value = res.data.find(p => p.id == route.params.id)
+    const res = await fetch('http://localhost:5000/tienda')
+    if (!res.ok) throw new Error('Error al cargar productos')
+    const productos = await res.json()
+    producto.value = productos.find(p => p.id == route.params.id)
   } catch (err) {
     console.error('Error al cargar el producto:', err)
   }
@@ -83,6 +83,7 @@ function añadirAlCarrito() {
   }, 3000)
 }
 </script>
+
 
 <style scoped>
 .detalle-producto {

@@ -34,27 +34,27 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const productos = ref([])
-const isLogged = ref(false)
 const router = useRouter()
 
 onMounted(async () => {
   try {
-    const res = await axios.get('http://localhost:5000/tienda')
-    productos.value = res.data
+    const res = await fetch('http://localhost:5000/tienda')
+    if (!res.ok) throw new Error('Error al cargar los productos')
+    productos.value = await res.json()
   } catch (error) {
-    alert('Error al cargar los productos')
+    alert(error.message)
   }
-
 })
 
 function irADetalle(id) {
   router.push(`/tienda/producto/${id}`)
 }
 </script>
+
+
 
 <style scoped>
 .header {
