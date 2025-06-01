@@ -1,0 +1,38 @@
+# Backend
+/backend/__pycache__/
+/backend/*.pyc
+/backend/*.pyo
+/backend/.env
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Base de datos temporal o archivos SQLite
+*.sqlite3
+*.db
+
+# Frontend
+/frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Editor y sistema
+.vscode/
+*.swp
+*.swo
+
+# Archivos generados por dependencias
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
