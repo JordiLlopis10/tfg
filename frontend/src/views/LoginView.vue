@@ -8,7 +8,6 @@
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/login">Inicio Sesión</RouterLink>
       </nav>
     </header>
 
@@ -20,8 +19,8 @@
         <button type="submit">Iniciar sesión</button>
         <p v-if="error" class="error-msg">{{ error }}</p>
         <p v-if="success" class="success-msg">{{ success }}</p>
-        <p>¿No tienes cuenta?
-          <router-link to="/register">Regístrate aquí</router-link>
+        <p class="recuperar">
+          <RouterLink to="/recuperar">¿Olvidaste tu contraseña?</RouterLink>
         </p>
       </form>
     </div>
@@ -37,8 +36,6 @@ const password = ref('')
 const error = ref('')
 const success = ref('')
 const router = useRouter()
-
-
 
 const login = async () => {
   error.value = ''
@@ -62,9 +59,14 @@ const login = async () => {
     if (response.ok) {
       localStorage.setItem('token', data.token)
 
-      await auth.fetchUser()
-      success.value = 'Login exitoso'
-      router.push('/perfil')
+      if (email.value === 'pedritoue2@gmail.com') {
+        localStorage.setItem('admin-auth', 'true')
+        success.value = 'Bienvenido administrador'
+        router.push('/admin')
+      } else {
+        error.value = 'Este usuario no tiene acceso como administrador'
+        localStorage.removeItem('admin-auth')
+      }
     } else {
       error.value = data.error || 'Credenciales incorrectas'
     }
@@ -73,7 +75,6 @@ const login = async () => {
   }
 }
 </script>
-
 
 <style scoped>
 .auth-container {
@@ -153,4 +154,13 @@ button:hover {
 .success-msg {
   color: green;
 }
+.recuperar {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.recuperar a {
+  color: #333;
+  text-decoration: underline;
+}
+
 </style>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, url_for
 import os
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -7,6 +7,8 @@ from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import smtplib
 from email.message import EmailMessage
+from datetime import datetime, timedelta, timezone
+import secrets
 
 load_dotenv()
 
@@ -386,5 +388,95 @@ def obtener_pedidos():
         print("Error al obtener pedidos:", e)
         return jsonify({"error": "No se pudieron obtener los pedidos"}), 500
 
+@app.route("/recuperar", methods=["POST"])
+def recuperar_contraseña():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"error": "Email requerido"}), 400
+
+    conn = mysql.connection
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+    user = cursor.fetchone()
+
+    if not user:
+        return jsonify({"error": "Correo no registrado"}), 404
+
+    token = secrets.token_urlsafe(32)
+    expires_at = datetime.utcnow() + timedelta(hours=1)
+
+    cursor.execute("INSERT INTO reset_tokens (email, token, expires_at) VALUES (%s, %s, %s)",
+                   (email, token, expires_at))
+    conn.commit()
+    cursor.close()
+
+    reset_link = f"http://localhost:5173/resetear/{token}"
+
+    email_message = EmailMessage()
+    email_message["Subject"] = "Recuperación de contraseña"
+    email_message["From"] = os.getenv("EMAIL_SENDER")
+    email_message["To"] = email
+    email_message.set_content(
+        f"Haz clic en este enlace para restablecer tu contraseña:\n\n{reset_link}\n\nEste enlace expirará en 1 hora."
+    )
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(os.getenv("EMAIL_SENDER"), os.getenv("EMAIL_PASSWORD"))
+            smtp.send_message(email_message)
+    except Exception as e:
+        return jsonify({"error": f"Error al enviar el correo: {str(e)}"}), 500
+
+    return jsonify({"message": "Correo de recuperación enviado"}), 200
+
+
+@app.route("/resetear/<token>", methods=["GET", "POST"])
+def resetear_contraseña(token):
+    conn = mysql.connection
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT email, expires_at FROM reset_tokens WHERE token = %s", (token,))
+    result = cursor.fetchone()
+
+    if not result:
+        cursor.close()
+        return jsonify({"error": "Token inválido"}), 400
+
+    email, expires_at = result
+
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    if datetime.now(timezone.utc) > expires_at:
+        cursor.close()
+        return jsonify({"error": "Token expirado"}), 400
+
+    if request.method == "GET":
+        cursor.close()
+        return jsonify({"message": "Token válido", "email": email}), 200
+
+    if request.method == "POST":
+        data = request.get_json()
+        nueva_clave = data.get("password")
+
+        if not nueva_clave:
+            cursor.close()
+            return jsonify({"error": "Contraseña requerida"}), 400
+
+        try:
+            hashed_password = generate_password_hash(nueva_clave)
+
+            cursor.execute("UPDATE users SET password = %s WHERE email = %s", (hashed_password, email))
+            cursor.execute("DELETE FROM reset_tokens WHERE token = %s", (token,))
+            conn.commit()
+            cursor.close()
+            return jsonify({"message": "Contraseña actualizada correctamente"}), 200
+        except Exception as e:
+            cursor.close()
+            print("Error actualizando contraseña:", e)
+            return jsonify({"error": "Error al actualizar la contraseña"}), 500
+        
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

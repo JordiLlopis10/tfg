@@ -9,6 +9,8 @@ import ProductoView from '@/views/ProductoView.vue'
 import CarritoView from '@/views/CarritoView.vue'
 import PasarelaView from '@/views/PasarelaView.vue'
 import ContactoView from '@/views/ContactoView.vue'
+import RecuperarView from '@/views/RecuperarView.vue'
+import ResetearView from '@/views/ResetearView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +65,16 @@ const router = createRouter({
       path: '/contacto',
       name: 'contacto',
       component: ContactoView,
+    },
+    {
+      path: '/recuperar',
+      name: 'recuperar',
+      component: RecuperarView,
+    },
+    {
+      path: '/resetear/:token',
+      name: 'resetear',
+      component: ResetearView,
     },
   ],
 })

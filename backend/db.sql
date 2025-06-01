@@ -25,3 +25,9 @@ CREATE TABLE pagos (
     provincia VARCHAR(100),
     total DECIMAL(10,2) NOT NULL
 );
+CREATE TABLE reset_tokens (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  expires_at DATETIME NOT NULL
+);

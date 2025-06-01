@@ -9,6 +9,7 @@
         <RouterLink to="/tienda">Tienda</RouterLink>
         <RouterLink to="/carrito">Carrito</RouterLink>
         <RouterLink to="/contacto">Contacto</RouterLink>
+        <button class="logout-btn" @click="logout">Cerrar sesión</button>
       </nav>
     </header>
 
@@ -125,6 +126,12 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("admin-auth");
+  router.push("/");
+};
+
 const producto = reactive({
   nombre: "",
   descripcion: "",
@@ -189,8 +196,12 @@ async function cargarPedidos() {
 }
 
 onMounted(() => {
-  cargarProductos();
-  cargarPedidos();
+    if (localStorage.getItem('admin-auth') !== 'true') {
+        router.push('/login')
+        return
+  }
+    cargarProductos();
+    cargarPedidos();
 });
 </script>
 
@@ -341,4 +352,18 @@ th {
 .accion-btn:hover {
   background-color: #d49a9a;
 }
+.logout-btn {
+  background-color: #d49a9a;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #eac6c6;
+}
+
 </style>

@@ -23,7 +23,7 @@
 
         <div class="campo">
           <label for="email">Correo electrónico</label>
-          <input id="email" v-model="email" type="email" required placeholder="ejemplo@gmail.com" />
+          <input id="email" v-model="email" type="email" required placeholder="raulnavarro@gmail.com" />
         </div>
 
         <div class="campo">
@@ -32,7 +32,7 @@
             id="mensaje"
             v-model="mensaje"
             rows="5"
-            placeholder="Describe el artículo personalizado que deseas..."
+            placeholder="Describe el artículo personalizado que deseas... O cualquier otra consulta"
             required
           ></textarea>
         </div>
