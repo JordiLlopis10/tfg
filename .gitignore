@@ -3,7 +3,8 @@
 /backend/*.pyc
 /backend/*.pyo
 /backend/.env
-
+backend/.env
+**/.env
 # Virtual environments
 env/
 venv/
