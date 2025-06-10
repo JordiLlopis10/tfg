@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 import os
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -37,7 +37,7 @@ class User(UserMixin):
         self.email = email
     
     def is_admin(self):
-        return self.email == "admin@example.com"
+        return self.email == "pedritoue2@gmail.com"
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -159,6 +159,7 @@ def obtener_productos():
 
 
 @app.route('/admin', methods=['POST'])
+@login_required
 def add_product():
     data = request.json
     nombre = data.get('nombre')
@@ -191,9 +192,12 @@ def add_product():
     return jsonify({'message': 'Producto añadido correctamente'}), 201
 
 @app.route('/admin/<int:producto_id>', methods=['DELETE'])
+@login_required
 def delete_product(producto_id):
-    cursor = mysql.connection.cursor()
+    if not current_user.is_admin():
+        return jsonify({'error': 'No autorizado'}), 403
 
+    cursor = mysql.connection.cursor()
     try:
         sql = "DELETE FROM productos WHERE id = %s"
         cursor.execute(sql, (producto_id,))
@@ -207,6 +211,7 @@ def delete_product(producto_id):
     return jsonify({'message': 'Producto eliminado correctamente'}), 200
 
 @app.route('/admin/editar/<int:producto_id>', methods=['GET'])
+@login_required
 def get_producto_admin(producto_id):
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT id, nombre, descripcion, precio, stock, imagen FROM productos WHERE id = %s", (producto_id,))
@@ -226,6 +231,7 @@ def get_producto_admin(producto_id):
     return jsonify({'error': 'Producto no encontrado'}), 404
 
 @app.route('/admin/<int:producto_id>', methods=['PUT'])
+@login_required
 def actualizar_producto_admin(producto_id):
     data = request.json
     nombre = data.get('nombre')
@@ -478,5 +484,16 @@ def resetear_contraseña(token):
             print("Error actualizando contraseña:", e)
             return jsonify({"error": "Error al actualizar la contraseña"}), 500
         
+@login_manager.unauthorized_handler
+def unauthorized():
+    if request.accept_mimetypes.accept_json or request.is_json or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify({"error": "No autorizado"}), 401
+    return redirect(url_for('login'))   
+
+@app.errorhandler(404)
+def not_found(error):
+    if request.accept_mimetypes.accept_html:
+        return render_template("404.html"), 404
+    return jsonify({"error": "La ruta solicitada no existe"}), 404
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

@@ -136,10 +136,14 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const menuAbierto = ref(false);
 
-const logout = () => {
+const logout = async () => {
+  await fetch("http://localhost:5000/logout", {
+    method: "POST",
+    credentials: "include"
+  });
   localStorage.removeItem("token");
   localStorage.removeItem("admin-auth");
-  router.push("/");
+  router.push("/login");
 };
 
 const producto = reactive({
@@ -217,13 +221,22 @@ async function cargarPedidos() {
   }
 }
 
-onMounted(() => {
-  if (localStorage.getItem("admin-auth") !== "true") {
+onMounted(async () => {
+  try {
+    const res = await fetch("http://localhost:5000/auth/user", {
+      credentials: "include"
+    });
+    if (!res.ok) throw new Error();
+    const user = await res.json();
+    if (!["pedritoue2@gmail.com", "llopisgodinojordi@gmai.com"].includes(user.email)) {
+      router.push("/login");
+      return;
+    }
+    await cargarProductos();
+    await cargarPedidos();
+  } catch {
     router.push("/login");
-    return;
   }
-  cargarProductos();
-  cargarPedidos();
 });
 </script>
 

@@ -11,6 +11,7 @@ import PasarelaView from '@/views/PasarelaView.vue'
 import ContactoView from '@/views/ContactoView.vue'
 import RecuperarView from '@/views/RecuperarView.vue'
 import ResetearView from '@/views/ResetearView.vue'
+import NoEncontradaView from '@/views/NoEncontradaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,6 +76,11 @@ const router = createRouter({
       path: '/resetear/:token',
       name: 'resetear',
       component: ResetearView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'error',
+      component: NoEncontradaView,
     },
   ],
 })

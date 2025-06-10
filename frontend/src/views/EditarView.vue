@@ -76,6 +76,24 @@ async function guardarCambios() {
     alert('Error al actualizar producto')
   }
 }
+onMounted(async () => {
+  try {
+    const res = await fetch("http://localhost:5000/auth/user", {
+      credentials: "include"
+    });
+    if (!res.ok) throw new Error();
+    const user = await res.json();
+    if (!["pedritoue2@gmail.com", "llopisgodinojordi@gmai.com"].includes(user.email)) {
+      router.push("/login");
+      return;
+    }
+    const productoRes = await fetch(`http://localhost:5000/admin/editar/${id}`);
+    if (!productoRes.ok) throw new Error('Error al cargar producto');
+    producto.value = await productoRes.json();
+  } catch (err) {
+    router.push("/login");
+  }
+});
 </script>
 
 
