@@ -4,11 +4,16 @@
       <RouterLink to="/">
         <img src="/logo.png" alt="Logo" class="logo" />
       </RouterLink>
-      <nav class="nav">
-        <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/tienda">Tienda</RouterLink>
-        <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/contacto">Contacto</RouterLink>
+
+      <button class="hamburger" @click="menuVisible = !menuVisible">
+        ☰
+      </button>
+
+      <nav class="nav" :class="{ open: menuVisible }">
+        <RouterLink to="/" @click="menuVisible = false">Inicio</RouterLink>
+        <RouterLink to="/tienda" @click="menuVisible = false">Tienda</RouterLink>
+        <RouterLink to="/carrito" @click="menuVisible = false">Carrito</RouterLink>
+        <RouterLink to="/contacto" @click="menuVisible = false">Contacto</RouterLink>
       </nav>
     </header>
 
@@ -50,6 +55,12 @@
         </div>
       </section>
     </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>© 2025 Detalls de Patch. Todos los derechos reservados.</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -58,6 +69,7 @@ import { ref, onMounted } from 'vue'
 
 const noticia = ref('')
 const destacados = ref([])
+const menuVisible = ref(false)
 
 onMounted(async () => {
   try {
@@ -80,12 +92,9 @@ html, body {
 }
 
 .home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
   font-family: 'Arial', sans-serif;
   background-color: #ffffff;
-  color: #333;
+  min-height: 100vh;
 }
 
 .header {
@@ -94,10 +103,19 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .logo {
   height: 60px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .nav {
@@ -114,6 +132,40 @@ html, body {
 
 .nav a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f4dada;
+    width: 100%;
+    padding: 1rem 2rem;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    text-align: center;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
+    .portada-texto {
+    font-size: 1.1rem;
+    padding: 1rem 1.2rem;
+    width: 80%;
+  }
 }
 
 .main-content {
@@ -276,4 +328,20 @@ html, body {
   font-size: 1rem;
   font-weight: 600;
 }
+.footer {
+  background-color: #eac6c6;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+  border-top: 1px solid #d8b5b5;
+  margin-top: 2rem;
+}
+
+.footer-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
 </style>

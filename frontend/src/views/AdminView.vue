@@ -1,17 +1,23 @@
 <template>
   <div>
     <header class="header">
-      <RouterLink to="/">
-        <img src="/logo.png" alt="Logo" class="logo" />
-      </RouterLink>
-      <nav class="nav">
-        <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/tienda">Tienda</RouterLink>
-        <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/contacto">Contacto</RouterLink>
-        <button class="logout-btn" @click="logout">Cerrar sesión</button>
-      </nav>
-    </header>
+  <RouterLink to="/">
+    <img src="/logo.png" alt="Logo" class="logo" />
+  </RouterLink>
+  
+  <button class="hamburger" @click="menuAbierto = !menuAbierto">
+    ☰
+  </button>
+
+  <nav :class="['nav', { open: menuAbierto }]">
+    <RouterLink to="/">Inicio</RouterLink>
+    <RouterLink to="/tienda">Tienda</RouterLink>
+    <RouterLink to="/carrito">Carrito</RouterLink>
+    <RouterLink to="/contacto">Contacto</RouterLink>
+    <button class="logout-btn" @click="logout">Cerrar sesión</button>
+  </nav>
+</header>
+
 
     <div class="admin-container">
       <div class="admin-top">
@@ -49,8 +55,9 @@
         </section>
 
         <section class="product-list">
-          <h2>Productos Existentes</h2>
-          <table>
+            <h2>Productos Existentes</h2>
+            <div class="table-wrapper">
+            <table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -82,12 +89,14 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+            </table>
+        </div>
         </section>
       </div>
 
-      <section class="order-list">
-        <h2>Pedidos Recientes</h2>
+    <section class="order-list">
+    <h2>Pedidos Recientes</h2>
+    <div class="table-wrapper">
         <table>
           <thead>
             <tr>
@@ -114,7 +123,8 @@
             </tr>
           </tbody>
         </table>
-      </section>
+    </div>
+    </section>
     </div>
   </div>
 </template>
@@ -124,6 +134,7 @@ import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const menuAbierto = ref(false);
 
 const logout = () => {
   localStorage.removeItem("token");
@@ -224,6 +235,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .logo {
@@ -244,6 +256,15 @@ onMounted(() => {
 
 .nav a:hover {
   text-decoration: underline;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+  color: #000;
 }
 
 .admin-container {
@@ -364,6 +385,7 @@ th {
 .accion-btn:hover {
   background-color: #d49a9a;
 }
+
 .logout-btn {
   background-color: #d49a9a;
   border: none;
@@ -378,4 +400,48 @@ th {
   background-color: #eac6c6;
 }
 
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f4dada;
+    width: 100%;
+    padding: 1rem 2rem;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a,
+  .logout-btn {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
+
+  .logout-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table-wrapper table {
+  min-width: 800px;
+  white-space: nowrap;
+}
+
+}
 </style>
+

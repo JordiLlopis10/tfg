@@ -4,11 +4,16 @@
       <RouterLink to="/">
         <img src="/logo.png" alt="Logo" class="logo" />
       </RouterLink>
-      <nav class="nav">
-        <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/tienda">Tienda</RouterLink>
-        <RouterLink to="/carrito">Carrito</RouterLink>
-        <RouterLink to="/contacto">Contacto</RouterLink>
+
+      <button class="hamburger" @click="menuVisible = !menuVisible">
+        ☰
+      </button>
+
+      <nav class="nav" :class="{ open: menuVisible }">
+        <RouterLink to="/" @click="menuVisible = false">Inicio</RouterLink>
+        <RouterLink to="/tienda" @click="menuVisible = false">Tienda</RouterLink>
+        <RouterLink to="/carrito" @click="menuVisible = false">Carrito</RouterLink>
+        <RouterLink to="/contacto" @click="menuVisible = false">Contacto</RouterLink>
       </nav>
     </header>
 
@@ -45,6 +50,7 @@ const route = useRoute()
 const producto = ref(null)
 const cantidad = ref(1)
 const mensajeVisible = ref(false)
+const menuVisible = ref(false)
 
 onMounted(async () => {
   try {
@@ -84,8 +90,90 @@ function añadirAlCarrito() {
 }
 </script>
 
-
 <style scoped>
+.header {
+  background-color: #eac6c6;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  height: 60px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  font-weight: bold;
+}
+
+.nav a {
+  color: #000;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f4dada;
+    width: 100%;
+    padding: 1rem 2rem;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    text-align: center;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
+    .producto-main {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .galeria {
+    width: 180px;
+  }
+
+  .info {
+    text-align: center;
+  }
+
+  .imagen-principal {
+    max-height: 200px;
+  }
+}
+
 .detalle-producto {
   max-width: 900px;
   margin: 4rem auto;
@@ -99,6 +187,7 @@ function añadirAlCarrito() {
   display: flex;
   gap: 2rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .galeria {
@@ -171,33 +260,5 @@ function añadirAlCarrito() {
   color: green;
   font-weight: bold;
   font-size: 0.95rem;
-}
-
-.header {
-  background-color: #eac6c6;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  height: 60px;
-}
-
-.nav {
-  display: flex;
-  gap: 1.5rem;
-  font-weight: bold;
-}
-
-.nav a {
-  color: #000;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.nav a:hover {
-  text-decoration: underline;
 }
 </style>
