@@ -178,7 +178,7 @@ async function cargarProductos() {
 async function añadirProducto() {
   try {
     const productoEnviar = { ...producto };
-    const res = await fetch("http://localhost:5000/admin", {
+    const res = await fetch("https://detallspatch.onrender.com/admin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
