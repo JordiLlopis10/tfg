@@ -521,7 +521,7 @@ def unauthorized():
 @app.errorhandler(404)
 def not_found(error):
     if request.accept_mimetypes.accept_html:
-        return render_template("404.html"), 404
+        return redirect('/404')
     return jsonify({"error": "La ruta solicitada no existe"}), 404
 
 if __name__ == "__main__":
