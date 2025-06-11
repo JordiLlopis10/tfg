@@ -525,4 +525,4 @@ def not_found(error):
     return jsonify({"error": "La ruta solicitada no existe"}), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True,port="1000")
