@@ -448,7 +448,7 @@ def recuperar_contraseña():
     conn.commit()
     cursor.close()
 
-    reset_link = f"https://detallspatch.vercel.app//resetear/{token}"
+    reset_link = f"https://detallspatch.vercel.app/resetear/{token}"
 
     email_message = EmailMessage()
     email_message["Subject"] = "Recuperación de contraseña"

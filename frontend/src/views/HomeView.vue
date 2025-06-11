@@ -61,30 +61,10 @@
       </section>
     </main>
 
-    <section class="por-que-detalls">
-      <h2>¿Por qué comprar en Detalls de Patch?</h2>
-      <div class="beneficios">
-        <div class="beneficio">
-          <i class="fas fa-shield-alt"></i>
-          <h3>100% Pago Seguro</h3>
-          <p>Tu seguridad es nuestra prioridad.</p>
-        </div>
-        <div class="beneficio">
-          <i class="fas fa-undo-alt"></i>
-          <h3>14 Días de Devolución</h3>
-          <p>Si no estás satisfecha, lo solucionamos.</p>
-        </div>
-        <div class="beneficio">
-          <i class="fas fa-headset"></i>
-          <h3>Atención Personalizada</h3>
-          <p>Estamos siempre disponibles para ti.</p>
-        </div>
-      </div>
-    </section>
-
+    
     <section class="sobre-nosotros">
       <h2>Nuestra esencia</h2>
-
+      
       <div class="sobre-grid">
         <p>
           Detalls de Patch nació en un pequeño rincón de casa, rodeado de telas,
@@ -104,13 +84,33 @@
           colaboramos con proveedores locales para apoyar la economía de
           proximidad.
         </p>
-
+        
         <p>
           Ya sea un regalo para alguien especial o un capricho para ti, queremos
           que cada pieza te recuerde que los detalles importan. Gracias por
           formar parte de esta aventura y permitirnos seguir hilando historias
           juntos.
         </p>
+      </div>
+    </section>
+    <section class="por-que-detalls">
+      <h2>¿Por qué comprar en Detalls de Patch?</h2>
+      <div class="beneficios">
+        <div class="beneficio">
+          <i class="fas fa-shield-alt"></i>
+          <h3>100% Pago Seguro</h3>
+          <p>Tu seguridad es nuestra prioridad.</p>
+        </div>
+        <div class="beneficio">
+          <i class="fas fa-undo-alt"></i>
+          <h3>14 Días de Devolución</h3>
+          <p>Si no estás satisfecha, lo solucionamos.</p>
+        </div>
+        <div class="beneficio">
+          <i class="fas fa-headset"></i>
+          <h3>Atención Personalizada</h3>
+          <p>Estamos siempre disponibles para ti.</p>
+        </div>
       </div>
     </section>
 
