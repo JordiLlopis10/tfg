@@ -56,11 +56,18 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <p>© 2025 Detalls de Patch. Todos los derechos reservados.</p>
-      </div>
-    </footer>
+<footer class="footer">
+  <div class="footer-content">
+    <p>© 2025 Detalls de Patch. Todos los derechos reservados.</p>
+    <div class="social-icons">
+      <a href="https://www.youtube.com/@detallspatch" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.instagram.com/detallspatch" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@detallspatch" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/detallspatch" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    </div>
+  </div>
+</footer>
+
   </div>
 </template>
 
