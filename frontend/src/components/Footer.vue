@@ -20,7 +20,6 @@
   font-size: 0.9rem;
   color: #333;
   border-top: 1px solid #d8b5b5;
-  margin-top: 2rem;
 }
 .footer-content {
   max-width: 900px;
