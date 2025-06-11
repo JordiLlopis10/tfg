@@ -428,6 +428,12 @@ body {
   gap: 2.5rem;
 }
 
+@media(min-width: 768px) {
+  .beneficios {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
 
 .beneficio {
   max-width: 240px;
