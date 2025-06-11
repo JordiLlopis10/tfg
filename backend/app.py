@@ -446,7 +446,7 @@ def recuperar_contraseña():
     conn.commit()
     cursor.close()
 
-    reset_link = f"http://localhost:5173/resetear/{token}"
+    reset_link = f"https://detallspatch.onrender.com/resetear/{token}"
 
     email_message = EmailMessage()
     email_message["Subject"] = "Recuperación de contraseña"
