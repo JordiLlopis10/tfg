@@ -82,7 +82,6 @@
       </div>
     </section>
 
-    <!-- -------------  SOBRE NOSOTROS ------------- -->
     <section class="sobre-nosotros">
       <h2>Nuestra esencia</h2>
 
