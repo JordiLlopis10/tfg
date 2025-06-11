@@ -5,7 +5,9 @@ import Footer from './components/Footer.vue'
 
 <template>
   <div class="app-container">
-    <RouterView />
+    <div class="main-content">
+      <RouterView />
+    </div>
     <Footer />
   </div>
 </template>
@@ -15,5 +17,11 @@ import Footer from './components/Footer.vue'
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 </style>

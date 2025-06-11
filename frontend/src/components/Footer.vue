@@ -20,12 +20,6 @@
   font-size: 0.9rem;
   color: #333;
   border-top: 1px solid #d8b5b5;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 100;
 }
 .footer-content {
   max-width: 900px;
@@ -44,9 +38,5 @@
 }
 .redes-sociales a:hover {
   color: #842c56;
-}
-
-body {
-  margin-bottom: 100px; 
 }
 </style>
