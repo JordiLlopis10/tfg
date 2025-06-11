@@ -47,12 +47,17 @@ const menuVisible = ref(false)
 
 const admins = ['pedritoue2@gmail.com', 'llopisgodinojordi@gmail.com']
 
-onMounted(() => {
-  const isAdmin = localStorage.getItem('admin-auth') === 'true'
-  if (isAdmin) {
-    router.push('/admin')
+onMounted(async () => {
+  try {
+    const res = await fetch('https://detallspatch.onrender.com/auth/user', {
+      credentials: 'include'
+    });
+    if (res.ok) {
+      router.push('/admin');
+    }
+  } catch (err) {
   }
-})
+});
 
 const login = async () => {
   error.value = ''
