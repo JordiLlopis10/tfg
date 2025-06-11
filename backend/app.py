@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, request, url_for
 import os
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv

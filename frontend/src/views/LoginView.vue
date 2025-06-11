@@ -69,16 +69,7 @@ const login = async () => {
     const data = await response.json()
 
     if (response.ok) {
-      localStorage.setItem('token', data.token)
-
-      if (admins.includes(email.value)) {
-        localStorage.setItem('admin-auth', 'true')
-        success.value = 'Bienvenido administrador'
-        router.push('/admin')
-      } else {
-        error.value = 'Este usuario no tiene acceso como administrador'
-        localStorage.removeItem('admin-auth')
-      }
+      router.push('/admin')
     } else {
       error.value = data.error || 'Credenciales incorrectas'
     }
