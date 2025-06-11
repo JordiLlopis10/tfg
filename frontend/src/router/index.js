@@ -12,6 +12,7 @@ import ContactoView from '@/views/ContactoView.vue'
 import RecuperarView from '@/views/RecuperarView.vue'
 import ResetearView from '@/views/ResetearView.vue'
 import NoEncontradaView from '@/views/NoEncontradaView.vue'
+import NosotrosView from '@/views/NosotrosView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,6 +82,11 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'error',
       component: NoEncontradaView,
+    },
+    {
+      path: '/sobrenosotros',
+      name: 'sobrenosotros',
+      component: NosotrosView,
     },
   ],
 })
