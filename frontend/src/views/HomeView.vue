@@ -64,6 +64,7 @@
           <a href="https://www.instagram.com/detallspatch" target="_blank"><i class="fab fa-instagram"></i></a>
           <a href="https://www.tiktok.com/@detallspatch" target="_blank"><i class="fab fa-tiktok"></i></a>
           <a href="https://www.facebook.com/detallspatch" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <p>Yeee</p>
         </div>
       </div>
     </footer>
