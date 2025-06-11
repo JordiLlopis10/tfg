@@ -41,12 +41,23 @@ const success = ref('')
 const router = useRouter()
 const menuVisible = ref(false)
 
-onMounted(() => {
-  const isAdmin = localStorage.getItem('admin-auth') === 'true'
-  if (!isAdmin) {
-    router.push('/')
+onMounted(async () => {
+  try {
+    const res = await fetch('https://detallspatch.onrender.com/auth/user', {
+      credentials: 'include'
+    });
+    if (!res.ok) {
+      router.push('/');
+      return;
+    }
+    const user = await res.json();
+    if (user.email !== 'pedritoue2@gmail.com') {
+      router.push('/');
+    }
+  } catch {
+    router.push('/');
   }
-})
+});
 
 const handleRegister = async () => {
   error.value = ''
