@@ -225,7 +225,7 @@ async function procesarPago() {
   )
 
   try {
-    const res = await fetch("http://localhost:5000/pago", {
+    const res = await fetch("https://detallspatch.onrender.com/pago", {
       method: "POST",
       credentials: "include",
       headers: {

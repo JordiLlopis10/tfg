@@ -64,7 +64,7 @@ async function enviarFormulario() {
   error.value = ""
 
   try {
-    const res = await fetch("http://localhost:5000/contacto", {
+    const res = await fetch("https://detallspatch.onrender.com/contacto", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -42,7 +42,7 @@ onMounted(async () => {
   token.value = route.params.token
 
   try {
-    const res = await fetch(`http://localhost:5000/resetear/${token.value}`, {
+    const res = await fetch(`https://detallspatch.onrender.com/resetear/${token.value}`, {
       method: 'GET',
     })
     const data = await res.json()
@@ -58,7 +58,7 @@ async function resetear() {
   mensaje.value = ''
   error.value = ''
   try {
-    const res = await fetch(`http://localhost:5000/resetear/${token.value}`, {
+    const res = await fetch(`https://detallspatch.onrender.com/resetear/${token.value}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: password.value })

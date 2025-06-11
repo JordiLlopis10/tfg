@@ -52,7 +52,7 @@ const menuVisible = ref(false)
 
 onMounted(async () => {
   try {
-    const res = await fetch(`http://localhost:5000/admin/editar/${id}`)
+    const res = await fetch(`https://detallspatch.onrender.com/admin/editar/${id}`)
     if (!res.ok) throw new Error('Error al cargar producto')
     producto.value = await res.json()
   } catch (err) {
@@ -62,7 +62,7 @@ onMounted(async () => {
 
 async function guardarCambios() {
   try {
-    const res = await fetch(`http://localhost:5000/admin/${id}`, {
+    const res = await fetch(`https://detallspatch.onrender.com/admin/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ async function guardarCambios() {
 }
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:5000/auth/user", {
+    const res = await fetch("https://detallspatch.onrender.com/auth/user", {
       credentials: "include"
     });
     if (!res.ok) throw new Error();
@@ -87,7 +87,7 @@ onMounted(async () => {
       router.push("/login");
       return;
     }
-    const productoRes = await fetch(`http://localhost:5000/admin/editar/${id}`);
+    const productoRes = await fetch(`https://detallspatch.onrender.com/admin/editar/${id}`);
     if (!productoRes.ok) throw new Error('Error al cargar producto');
     producto.value = await productoRes.json();
   } catch (err) {

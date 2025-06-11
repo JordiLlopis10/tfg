@@ -73,7 +73,7 @@ const menuVisible = ref(false)
 
 onMounted(async () => {
   try {
-    const res = await fetch('http://localhost:5000/')
+    const res = await fetch('https://detallspatch.onrender.com/')
     const data = await res.json()
     noticia.value = data.noticia
     destacados.value = data.destacados

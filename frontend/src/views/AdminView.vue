@@ -138,7 +138,7 @@ const menuAbierto = ref(false);
 
 const logout = async () => {
   try {
-    await fetch("http://localhost:5000/logout", {
+    await fetch("https://detallspatch.onrender.com/logout", {
       method: "POST",
       credentials: 'include'
     });
@@ -166,7 +166,7 @@ function editarProducto(id) {
 
 async function cargarProductos() {
   try {
-    const res = await fetch("http://localhost:5000/productos", {
+    const res = await fetch("https://detallspatch.onrender.com/productos", {
       credentials: 'include'
     });
     if (!res.ok) throw new Error("Error al cargar productos");
@@ -204,7 +204,7 @@ async function añadirProducto() {
 async function eliminarProducto(id) {
   if (!confirm("¿Estás seguro de eliminar este producto?")) return;
   try {
-    const res = await fetch(`http://localhost:5000/admin/${id}`, {
+    const res = await fetch(`https://detallspatch.onrender.com/admin/${id}`, {
       method: "DELETE",
       credentials: 'include'
     });
@@ -234,7 +234,7 @@ const pedidos = ref([]);
 
 async function cargarPedidos() {
   try {
-    const res = await fetch("http://localhost:5000/pedidos");
+    const res = await fetch("https://detallspatch.onrender.com/pedidos");
     if (!res.ok) throw new Error("Error al cargar pedidos");
     pedidos.value = await res.json();
   } catch (err) {
@@ -244,7 +244,7 @@ async function cargarPedidos() {
 
 onMounted(async () => {
   try {
-    const authCheck = await fetch("http://localhost:5000/auth/user", {
+    const authCheck = await fetch("https://detallspatch.onrender.com/auth/user", {
       credentials: 'include'
     });
     

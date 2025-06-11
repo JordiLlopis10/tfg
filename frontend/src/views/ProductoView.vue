@@ -54,7 +54,7 @@ const menuVisible = ref(false)
 
 onMounted(async () => {
   try {
-    const res = await fetch('http://localhost:5000/tienda')
+    const res = await fetch('https://detallspatch.onrender.com/tienda')
     if (!res.ok) throw new Error('Error al cargar productos')
     const productos = await res.json()
     producto.value = productos.find(p => p.id == route.params.id)
