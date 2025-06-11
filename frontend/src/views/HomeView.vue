@@ -358,12 +358,12 @@ html, body {
 }
 
 .redes-sociales a {
-  color: #842c56; 
+  color: #000000; 
   font-size: 1.5rem;
   transition: color 0.2s;
 }
 
 .redes-sociales a:hover {
-  color: #eac6c6; 
+  color: #842c56; 
 }
 </style>
