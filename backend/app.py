@@ -27,7 +27,8 @@ app.config["MYSQL_SSL_VERIFY_CERT"] = True
 mysql = MySQL(app)
 
 CORS(app, resources={r"/*": {"origins": "https://detallspatch.vercel.app"}}, supports_credentials=True)
-
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
