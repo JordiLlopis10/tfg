@@ -11,13 +11,9 @@ import Footer from './components/Footer.vue'
 </template>
 
 <style>
-.page-container {
-  min-height: 100vh;
+.app-container {
   display: flex;
   flex-direction: column;
-}
-
-.page-container > *:last-child {
-  margin-top: auto;
+  min-height: 100vh;
 }
 </style>
