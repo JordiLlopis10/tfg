@@ -338,6 +338,10 @@ async function procesarPago() {
     font-size: 1.1rem;
     padding: 0.5rem 0;
   }
+    .campos-pequenos {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
 }
 .pasarela-container {
