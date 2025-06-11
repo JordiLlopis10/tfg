@@ -73,7 +73,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
 
 const noticia = ref('')
 const destacados = ref([])
