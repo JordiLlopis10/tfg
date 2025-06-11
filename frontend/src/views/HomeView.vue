@@ -5,15 +5,19 @@
         <img src="/logo.png" alt="Logo" class="logo" />
       </RouterLink>
 
-      <button class="hamburger" @click="menuVisible = !menuVisible">
-        ☰
-      </button>
+      <button class="hamburger" @click="menuVisible = !menuVisible">☰</button>
 
       <nav class="nav" :class="{ open: menuVisible }">
         <RouterLink to="/" @click="menuVisible = false">Inicio</RouterLink>
-        <RouterLink to="/tienda" @click="menuVisible = false">Tienda</RouterLink>
-        <RouterLink to="/carrito" @click="menuVisible = false">Carrito</RouterLink>
-        <RouterLink to="/contacto" @click="menuVisible = false">Contacto</RouterLink>
+        <RouterLink to="/tienda" @click="menuVisible = false"
+          >Tienda</RouterLink
+        >
+        <RouterLink to="/carrito" @click="menuVisible = false"
+          >Carrito</RouterLink
+        >
+        <RouterLink to="/contacto" @click="menuVisible = false"
+          >Contacto</RouterLink
+        >
       </nav>
     </header>
 
@@ -25,7 +29,8 @@
     <section class="bienvenida">
       <h2>Bienvenido a Detalls de Patch</h2>
       <p>
-        Creamos a mano productos únicos llenos de amor y dedicación. Descubre el detalle perfecto para ti o para regalar a alguien especial.
+        Creamos a mano productos únicos llenos de amor y dedicación. Descubre el
+        detalle perfecto para ti o para regalar a alguien especial.
       </p>
     </section>
 
@@ -56,42 +61,71 @@
       </section>
     </main>
 
+    <section class="por-que-detalls">
+      <h2>¿Por qué comprar en Detalls de Patch?</h2>
+      <div class="beneficios">
+        <div class="beneficio">
+          <i class="fas fa-shield-alt"></i>
+          <h3>100% Pago Seguro</h3>
+          <p>Tu seguridad es nuestra prioridad.</p>
+        </div>
+        <div class="beneficio">
+          <i class="fas fa-undo-alt"></i>
+          <h3>14 Días de Devolución</h3>
+          <p>Si no estás satisfecha, lo solucionamos.</p>
+        </div>
+        <div class="beneficio">
+          <i class="fas fa-headset"></i>
+          <h3>Atención Personalizada</h3>
+          <p>Estamos siempre disponibles para ti.</p>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="footer-content">
         <p>© 2025 Detalls de Patch. Todos los derechos reservados.</p>
         <div class="redes-sociales">
-          <a href="https://www.youtube.com/@detallspatch" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.instagram.com/detallspatch" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.tiktok.com/@detallspatch" target="_blank"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.facebook.com/detallspatch" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.youtube.com/@detallspatch" target="_blank"
+            ><i class="fab fa-youtube"></i
+          ></a>
+          <a href="https://www.instagram.com/detallspatch" target="_blank"
+            ><i class="fab fa-instagram"></i
+          ></a>
+          <a href="https://www.tiktok.com/@detallspatch" target="_blank"
+            ><i class="fab fa-tiktok"></i
+          ></a>
+          <a href="https://www.facebook.com/detallspatch" target="_blank"
+            ><i class="fab fa-facebook-f"></i
+          ></a>
         </div>
       </div>
     </footer>
-
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-const noticia = ref('')
-const destacados = ref([])
-const menuVisible = ref(false)
+const noticia = ref("");
+const destacados = ref([]);
+const menuVisible = ref(false);
 
 onMounted(async () => {
   try {
-    const res = await fetch('https://detallspatch.onrender.com/')
-    const data = await res.json()
-    noticia.value = data.noticia
-    destacados.value = data.destacados
+    const res = await fetch("https://detallspatch.onrender.com/");
+    const data = await res.json();
+    noticia.value = data.noticia;
+    destacados.value = data.destacados;
   } catch (err) {
-    console.error('Error al cargar el home:', err)
+    console.error("Error al cargar el home:", err);
   }
-})
+});
 </script>
 
 <style scoped>
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -99,7 +133,7 @@ html, body {
 }
 
 .home-container {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #ffffff;
   min-height: 100vh;
 }
@@ -168,10 +202,14 @@ html, body {
     font-size: 1.1rem;
     padding: 0.5rem 0;
   }
-    .portada-texto {
+  .portada-texto {
     font-size: 1.1rem;
     padding: 1rem 1.2rem;
     width: 80%;
+  }
+    .beneficios {
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
 
@@ -246,7 +284,7 @@ html, body {
   border-radius: 999px;
   font-weight: bold;
   color: #444;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .portada-container {
@@ -276,9 +314,10 @@ html, body {
   font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
 }
 
@@ -358,12 +397,58 @@ html, body {
 }
 
 .redes-sociales a {
-  color: #000000; 
+  color: #000000;
   font-size: 1.5rem;
   transition: color 0.2s;
 }
 
 .redes-sociales a:hover {
-  color: #842c56; 
+  color: #842c56;
 }
+.por-que-detalls {
+  background-color: #fef3f7;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(230, 180, 200, 0.15);
+}
+
+.por-que-detalls h2 {
+  font-size: 2rem;
+  color: #a33666;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.beneficios {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+
+.beneficio {
+  max-width: 240px;
+  margin: 0 auto;
+}
+
+.beneficio i {
+  font-size: 3rem;
+  color: #d84a8c;
+  margin-bottom: 1rem;
+}
+
+.beneficio h3 {
+  color: #842c56;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.beneficio p {
+  color: #444;
+  font-size: 0.95rem;
+}
+
 </style>
