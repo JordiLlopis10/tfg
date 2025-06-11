@@ -82,6 +82,39 @@
       </div>
     </section>
 
+    <!-- -------------  SOBRE NOSOTROS ------------- -->
+    <section class="sobre-nosotros">
+      <h2>Nuestra esencia</h2>
+
+      <div class="sobre-grid">
+        <p>
+          Detalls de Patch nació en un pequeño rincón de casa, rodeado de telas,
+          botones y muchas ganas de crear. Creemos que los objetos hechos a mano
+          tienen un poder especial: capturan historias, emociones y momentos
+          irrepetibles. Cada puntada, cada color y cada elección de material
+          reflejan nuestro deseo de compartir calidez y cercanía con quienes
+          confían en nosotros.
+        </p>
+
+        <p>
+          Con el tiempo, nuestro taller creció, pero mantenemos intactos
+          nuestros valores: <strong>calidad artesanal</strong>,
+          <strong>materiales responsables</strong> y
+          <strong>trato humano</strong>. Trabajamos en colecciones limitadas
+          para garantizar la exclusividad y minimizar el impacto ambiental, y
+          colaboramos con proveedores locales para apoyar la economía de
+          proximidad.
+        </p>
+
+        <p>
+          Ya sea un regalo para alguien especial o un capricho para ti, queremos
+          que cada pieza te recuerde que los detalles importan. Gracias por
+          formar parte de esta aventura y permitirnos seguir hilando historias
+          juntos.
+        </p>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="footer-content">
         <p>© 2025 Detalls de Patch. Todos los derechos reservados.</p>
@@ -207,7 +240,7 @@ body {
     padding: 1rem 1.2rem;
     width: 80%;
   }
-    .beneficios {
+  .beneficios {
     flex-direction: row;
     justify-content: space-around;
   }
@@ -428,7 +461,7 @@ body {
   gap: 2.5rem;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
   .beneficios {
     flex-direction: row;
     justify-content: space-around;
@@ -455,6 +488,44 @@ body {
 .beneficio p {
   color: #444;
   font-size: 0.95rem;
+}
+
+.sobre-nosotros {
+  background-color: #fff8fa;
+  padding: 3rem 1.5rem;
+  border-radius: 16px;
+  margin: 3rem auto;
+  max-width: 1000px;
+  box-shadow: 0 0 15px rgba(220, 170, 190, 0.15);
+  text-align: center;
+}
+
+.sobre-nosotros h2 {
+  color: #842c56;
+  font-size: 1.9rem;
+  margin-bottom: 2rem;
+}
+
+.sobre-grid {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.sobre-grid p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #555;
+  text-align: justify;
+}
+
+@media (min-width: 900px) {
+  .sobre-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sobre-grid p:nth-child(3) {
+    grid-column: span 2;
+  }
 }
 
 </style>
