@@ -15,30 +15,33 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")  
 
-# Configuración MySQL
-app.config["MYSQL_USER"] = os.getenv("user")
-app.config["MYSQL_PASSWORD"] = os.getenv("password")
-app.config["MYSQL_HOST"] = os.getenv("host")
-app.config["MYSQL_DB"] = os.getenv("db")
+# Configuración MySQL para Aiven
+app.config["MYSQL_USER"] = os.getenv("AVN_USER", "avnadmin")
+app.config["MYSQL_PASSWORD"] = os.getenv("AVN_PASSWORD")
+app.config["MYSQL_HOST"] = os.getenv("AVN_HOST")
+app.config["MYSQL_PORT"] = int(os.getenv("AVN_PORT", "12345"))
+app.config["MYSQL_DB"] = os.getenv("AVN_DB", "defaultdb")
+app.config["MYSQL_SSL_CA"] = os.getenv("AVN_SSL_CA", "tfg/backend/ca.pem")
+app.config["MYSQL_SSL_VERIFY_CERT"] = True 
+
 mysql = MySQL(app)
 
-# Configurar CORS
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 
-# Configurar Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login' 
 
-# Modelo de usuario para Flask-Login
 class User(UserMixin):
     def __init__(self, id_, email):
         self.id = id_
         self.email = email
     
     def is_admin(self):
+        if not self.is_authenticated:
+            return False
         return self.email == "pedritoue2@gmail.com"
-
+    
 @login_manager.user_loader
 def load_user(user_id):
     cursor = mysql.connection.cursor()
@@ -161,35 +164,62 @@ def obtener_productos():
 @app.route('/admin', methods=['POST'])
 @login_required
 def add_product():
-    data = request.json
-    nombre = data.get('nombre')
-    descripcion = data.get('descripcion')
-    precio = data.get('precio')
-    stock = data.get('stock')
-    imagen = data.get('imagen')
-
-    if not nombre or not descripcion or precio is None or stock is None or not imagen:
-        return jsonify({'error': 'Faltan campos obligatorios'}), 400
+    if not current_user.is_authenticated:
+        return jsonify({'error': 'Debes iniciar sesión'}), 401
+    if not current_user.is_admin():
+        return jsonify({'error': 'No autorizado'}), 403
 
     try:
-        precio = float(precio)
-        stock = int(stock)
-    except (ValueError, TypeError):
-        return jsonify({'error': 'Precio o stock inválidos'}), 400
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Datos JSON no proporcionados'}), 400
 
-    cursor = mysql.connection.cursor()
+        required_fields = ['nombre', 'descripcion', 'precio', 'stock', 'imagen']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': 'Faltan campos obligatorios'}), 400
 
-    try:
-        sql = "INSERT INTO productos (nombre, descripcion, precio, stock, imagen) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(sql, (nombre, descripcion, precio, stock, imagen))
+        try:
+            precio = float(data['precio'])
+            stock = int(data['stock'])
+        except (ValueError, TypeError) as e:
+            return jsonify({'error': f'Datos numéricos inválidos: {str(e)}'}), 400
+
+        cursor = mysql.connection.cursor()
+        
+        print("Valores a insertar:", {
+            'nombre': data['nombre'],
+            'descripcion': data['descripcion'],
+            'precio': precio,
+            'stock': stock,
+            'imagen': data['imagen']
+        })
+
+        cursor.execute(
+            "INSERT INTO productos (nombre, descripcion, precio, stock, imagen) VALUES (%s, %s, %s, %s, %s)",
+            (data['nombre'], data['descripcion'], precio, stock, data['imagen'])
+        )
+        
         mysql.connection.commit()
+        product_id = cursor.lastrowid
         cursor.close()
-    except Exception as e:
-        mysql.connection.rollback()
-        cursor.close()
-        return jsonify({'error': 'Error al añadir producto: ' + str(e)}), 500
 
-    return jsonify({'message': 'Producto añadido correctamente'}), 201
+        return jsonify({
+            'message': 'Producto añadido correctamente',
+            'product_id': product_id
+        }), 201
+
+    except Exception as e:
+        if 'mysql.connection' in locals():
+            mysql.connection.rollback()
+        if 'cursor' in locals():
+            cursor.close()
+        
+        print("Error completo:", str(e))
+        
+        return jsonify({
+            'error': 'Error al añadir producto',
+            'details': str(e)
+        }), 500
 
 @app.route('/admin/<int:producto_id>', methods=['DELETE'])
 @login_required
@@ -211,7 +241,6 @@ def delete_product(producto_id):
     return jsonify({'message': 'Producto eliminado correctamente'}), 200
 
 @app.route('/admin/editar/<int:producto_id>', methods=['GET'])
-@login_required
 def get_producto_admin(producto_id):
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT id, nombre, descripcion, precio, stock, imagen FROM productos WHERE id = %s", (producto_id,))
@@ -231,7 +260,6 @@ def get_producto_admin(producto_id):
     return jsonify({'error': 'Producto no encontrado'}), 404
 
 @app.route('/admin/<int:producto_id>', methods=['PUT'])
-@login_required
 def actualizar_producto_admin(producto_id):
     data = request.json
     nombre = data.get('nombre')
@@ -495,5 +523,6 @@ def not_found(error):
     if request.accept_mimetypes.accept_html:
         return render_template("404.html"), 404
     return jsonify({"error": "La ruta solicitada no existe"}), 404
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

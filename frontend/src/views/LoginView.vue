@@ -45,7 +45,7 @@ const success = ref('')
 const router = useRouter()
 const menuVisible = ref(false)
 
-const admins = ['pedritoue2@gmail.com', 'llopisgodinojordi@gmai.com']
+const admins = ['pedritoue2@gmail.com', 'llopisgodinojordi@gmail.com']
 
 onMounted(() => {
   const isAdmin = localStorage.getItem('admin-auth') === 'true'

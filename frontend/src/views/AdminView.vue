@@ -137,13 +137,17 @@ const router = useRouter();
 const menuAbierto = ref(false);
 
 const logout = async () => {
-  await fetch("http://localhost:5000/logout", {
-    method: "POST",
-    credentials: "include"
-  });
-  localStorage.removeItem("token");
-  localStorage.removeItem("admin-auth");
-  router.push("/login");
+  try {
+    await fetch("http://localhost:5000/logout", {
+      method: "POST",
+      credentials: 'include'
+    });
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin-auth");
+    router.push("/");
+  } catch (err) {
+    console.error("Error al cerrar sesión:", err);
+  }
 };
 
 const producto = reactive({
@@ -162,14 +166,15 @@ function editarProducto(id) {
 
 async function cargarProductos() {
   try {
-    const res = await fetch("http://localhost:5000/productos");
+    const res = await fetch("http://localhost:5000/productos", {
+      credentials: 'include'
+    });
     if (!res.ok) throw new Error("Error al cargar productos");
     productos.value = await res.json();
   } catch (err) {
     console.error("Error al cargar productos:", err);
   }
 }
-
 async function añadirProducto() {
   try {
     const productoEnviar = { ...producto };
@@ -178,6 +183,7 @@ async function añadirProducto() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(productoEnviar),
     });
     if (!res.ok) throw new Error("Error al añadir producto");
@@ -200,12 +206,27 @@ async function eliminarProducto(id) {
   try {
     const res = await fetch(`http://localhost:5000/admin/${id}`, {
       method: "DELETE",
+      credentials: 'include'
     });
+    
+    if (res.status === 401) {
+      alert("Debes iniciar sesión como administrador");
+      router.push("/login");
+      return;
+    }
+    
+    if (res.status === 403) {
+      alert("No tienes permisos de administrador");
+      return;
+    }
+    
     if (!res.ok) throw new Error("Error al eliminar producto");
+    
     alert("Producto eliminado");
     await cargarProductos();
   } catch (err) {
     alert("Error al eliminar producto. Intenta de nuevo.");
+    console.error(err);
   }
 }
 
@@ -223,18 +244,27 @@ async function cargarPedidos() {
 
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:5000/auth/user", {
-      credentials: "include"
+    const authCheck = await fetch("http://localhost:5000/auth/user", {
+      credentials: 'include'
     });
-    if (!res.ok) throw new Error();
-    const user = await res.json();
-    if (!["pedritoue2@gmail.com", "llopisgodinojordi@gmai.com"].includes(user.email)) {
+    
+    if (!authCheck.ok) {
       router.push("/login");
       return;
     }
-    await cargarProductos();
-    await cargarPedidos();
-  } catch {
+    
+    const userData = await authCheck.json();
+    
+    if (userData.email !== "pedritoue2@gmail.com") {
+      router.push("/");
+      return;
+    }
+    
+    cargarProductos();
+    cargarPedidos();
+    
+  } catch (err) {
+    console.error("Error de autenticación:", err);
     router.push("/login");
   }
 });
