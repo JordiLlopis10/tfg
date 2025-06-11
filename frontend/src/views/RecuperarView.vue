@@ -40,7 +40,7 @@ async function solicitarRecuperacion() {
   mensaje.value = ''
   error.value = ''
   try {
-    const res = await fetch('http://localhost:5000/recuperar', {
+    const res = await fetch('https://detallspatch.onrender.com/recuperar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })
